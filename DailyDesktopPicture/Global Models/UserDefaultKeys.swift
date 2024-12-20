@@ -13,4 +13,5 @@ enum UserDefaultKeys: String {
     case endpointSelection
     case tagSelection
     case customTagsSet
+    case apiAccessKey
 }

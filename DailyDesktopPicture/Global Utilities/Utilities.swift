@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct Utilities {
-    // MARK: - Save Data to User Defaults
-    
+    // MARK: - Save Data to User Defa
     /// Saves a `Codable` object to `UserDefaults` under a specified key.
     /// - Parameters:
     ///   - object: The `Codable` object to save.
@@ -37,8 +36,7 @@ struct Utilities {
         }
     }
     
-    
-    
+    // MARK: - Retrieve Data from User Defaults
     // Generic function to retrieve a Codable object from UserDefaults
     static func retrieveDataFromUserDefaults<T: Codable>(key: String, type: T.Type) -> T? {
         if let data = UserDefaults.standard.data(forKey: key) {
@@ -53,6 +51,7 @@ struct Utilities {
         return nil
     }
     
+    // MARK: - Get Alert
     static func getAlert(_ object: AlertsModel) -> Alert {
         let title: Text = .init(object.title)
         let message: Text? = object.message.map(Text.init)
@@ -71,5 +70,28 @@ struct Utilities {
                 dismissButton: object.primaryButton
             )
         }
+    }
+    
+    // MARK: - Open Window
+    static func openWindow(_ window: WindowValues) {
+        if let window = NSApplication.shared.windows.first(where: { $0.title == window.title }) {
+            if !window.isVisible {
+                NSApp.activate(ignoringOtherApps: true)
+                window.orderFrontRegardless()
+            }
+        } else {
+            if let url: URL = window.url {
+                NSWorkspace.shared.open(url)
+            }
+        }
+    }
+    
+    // MARK: - Close Window
+    static func closeWindow(_ window: WindowValues) {
+        guard let window = NSApplication.shared.windows.first(where: { $0.title == window.title }),
+        !window.isVisible else { return }
+        
+        NSApp.activate(ignoringOtherApps: true)
+        window.orderFrontRegardless()
     }
 }

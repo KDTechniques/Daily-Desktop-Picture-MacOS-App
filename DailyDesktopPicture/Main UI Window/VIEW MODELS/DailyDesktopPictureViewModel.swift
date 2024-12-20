@@ -53,14 +53,14 @@ final class DailyDesktopPictureViewModel {
     
     var cutomTagTextFieldText: String = ""
     
-    var downloadManager: DownloadManager = .init()
-    var wallpaperManager: WallpaperManager = .shared
-    var fileStorageManager: FileStorageManager = .init()
-    var imageAPIService: UnsplashAPIService = .init()
+    
+    @ObservationIgnored var downloadManager: DownloadManager = .init()
+    @ObservationIgnored var wallpaperManager: WallpaperManager = .shared
+    @ObservationIgnored var fileStorageManager: FileStorageManager = .init()
+    @ObservationIgnored var imageAPIService: UnsplashAPIService = .init()
     
     // MARK: - INITIALIZER
     init() {
-        //        removeAllUserDefaults() // remove this line later after debug....
         initializeUserDefaults()
     }
     
@@ -109,6 +109,13 @@ final class DailyDesktopPictureViewModel {
         endpointSelection = utilities.retrieveDataFromUserDefaults(key: defaultKeys.endpointSelection.rawValue, type: EndpointTypes.self) ?? .random
         tagSelection = defaults.string(forKey: defaultKeys.tagSelection.rawValue) ?? ""
         customTagsSet = Set(defaults.stringArray(forKey: defaultKeys.customTagsSet.rawValue) ?? [])
+    }
+    
+    // MARK: - Set Access Key
+    func setAccessKey(_ key: String) {
+        Task {
+            await imageAPIService.saveAccessKeyToUserDefaults(key)
+        }
     }
     
     // MARK: - createCustomTag

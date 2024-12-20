@@ -14,7 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem: NSStatusItem?
     
     // MARK: - PRIVATE PROPERTIES
-    let windowValues = WindowTitleValues.self
+    let windowValues = WindowValues.self
     
     // MARK: FUNCTIONS
     
@@ -51,23 +51,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: - showMainUI
     @objc func showMainUI() {
-        if let window = NSApplication.shared.windows.first(where: { $0.title == windowValues.main.rawValue }) {
-            if !window.isVisible {
-                NSApp.activate(ignoringOtherApps: true)
-                window.orderFrontRegardless()
-            }
-        } else {
-            if let url: URL = .init(string: "app://main") {
-                NSWorkspace.shared.open(url)
-            }
-        }
+        Utilities.openWindow(.main)
     }
     
     // MARK: - closeMainAppOnLaunch
     func closeMainAppOnLaunch() {
-        if let window = NSApplication.shared.windows.first(where: { $0.title == windowValues.main.rawValue }) {
-            window.close()
-        }
+        Utilities.closeWindow(.main)
     }
     
     // MARK: - quitApp

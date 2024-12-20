@@ -28,6 +28,10 @@ struct ContentView: View {
                 
                 RemoveAllCustomTagsButtonView()
                 
+                DividerView()
+                
+                APIKeyWindowOpenButtonView()
+                
                 Spacer()
                 
                 DividerView()
@@ -40,7 +44,7 @@ struct ContentView: View {
             }
             .padding()
         }
-        .frame(maxWidth: 400, maxHeight: 500)
+        .frame(width: 400, height: 500)
     }
 }
 
