@@ -12,6 +12,7 @@ struct APIKeyInsertionView: View {
     @State private var vm: APIKeyWindowViewModel
     @FocusState private var isTextFieldFocused: Bool
     
+    // MARK: - INITIALIZER
     init(dailyDesktopPictureVM: DailyDesktopPictureViewModel) {
         vm = .init(dailyDesktopPictureViewModel: dailyDesktopPictureVM)
     }
@@ -19,7 +20,7 @@ struct APIKeyInsertionView: View {
     // MARK: - BODY
     var body: some View {
         Form {
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 20) {
                 HStack {
                     TextField("Your API Access Key",
                               text: $vm.apiKeyTextFieldText,
@@ -34,6 +35,22 @@ struct APIKeyInsertionView: View {
                     Button("Connect") {
                         unfocusTextField()
                         vm.connectAPIKey()
+                    }
+                }
+                
+                HStack(alignment: .top, spacing: 5) {
+                    Text("**Status**:")
+                    
+                    VStack(alignment: .leading) {
+                        HStack(spacing: 5) {
+                            Text(vm.apiAccessKeyStatus.text)
+                                .foregroundStyle(vm.apiAccessKeyStatus.textForegroundColor)
+                            
+                            vm.apiAccessKeyStatus.systemImage
+                        }
+                        
+                        Text(vm.apiAccessKeyStatus.secondaryText)
+                            .font(.footnote.italic())
                     }
                 }
                 
@@ -78,25 +95,23 @@ struct APIKeyInsertionView: View {
                     }
                 }
                 .font(.footnote)
-                .padding(.top)
             }
             .padding(.vertical)
         }
-        .frame(width: 600, height: 350)
+        .frame(width: 600, height: 400)
         .padding()
     }
 }
 
 // MARK: - PREVIEWS
-#Preview("APIKeyInsertionView") {
+#Preview(WindowValues.apiKey.title) {
     APIKeyInsertionView(dailyDesktopPictureVM: DailyDesktopPictureViewModel())
 }
 
+// MARK: - EXTENSIONS
 extension APIKeyInsertionView {
     // MARK: - Unfocus Text Field
     private func unfocusTextField() {
         isTextFieldFocused = false
     }
-    
-    
 }

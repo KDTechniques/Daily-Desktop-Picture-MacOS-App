@@ -49,7 +49,7 @@ struct ContentView: View {
 }
 
 // MARK: - PREVIEWS
-#Preview("Daily Desktop Picture") {
+#Preview(WindowValues.main.title) {
     ContentView()
         .environment(DailyDesktopPictureViewModel())
 }

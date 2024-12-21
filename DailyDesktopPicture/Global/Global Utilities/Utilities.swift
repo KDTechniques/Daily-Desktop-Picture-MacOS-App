@@ -38,8 +38,8 @@ struct Utilities {
     
     // MARK: - Retrieve Data from User Defaults
     // Generic function to retrieve a Codable object from UserDefaults
-    static func retrieveDataFromUserDefaults<T: Codable>(key: String, type: T.Type) -> T? {
-        if let data = UserDefaults.standard.data(forKey: key) {
+    static func retrieveDataFromUserDefaults<T: Codable>(key: UserDefaultKeys, type: T.Type) -> T? {
+        if let data = UserDefaults.standard.data(forKey: key.rawValue) {
             let decoder = JSONDecoder()
             do {
                 let object = try decoder.decode(T.self, from: data)

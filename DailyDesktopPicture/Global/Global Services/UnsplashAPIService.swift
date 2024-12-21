@@ -39,6 +39,7 @@ actor UnsplashAPIService {
     private var accessKey: String?
     private let randomPhotoURLString = "https://api.unsplash.com/photos/random?orientation=landscape"
     private let defaults: UserDefaults = .standard
+    private let timeout: TimeInterval = 10
     
     // MARK: - INITIALIZER
     init() {
@@ -66,14 +67,15 @@ actor UnsplashAPIService {
     }
     
     // MARK: - Fetch Random Image URL
-    func fetchRandomImageURLString() async throws -> String? {
-        guard let url = URL(string: randomPhotoURLString) else {
+    func fetchRandomImageURLString() async throws -> URL? {
+        guard let randomPhotoURLString = URL(string: randomPhotoURLString) else {
             print("Invalid URL")
             return nil
         }
         
-        let response = try await networkCall(url, UnsplashPhotoModel.self)
-        return response.photo.urlString
+        let response = try await networkCall(randomPhotoURLString, UnsplashPhotoModel.self)
+        let url: URL? = .init(string: response.photo.urlString)
+        return url
     }
     
     // MARK: - Fetch Array of Query Image URLs
@@ -95,7 +97,7 @@ actor UnsplashAPIService {
             throw URLError(.badURL)
         }
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeout)
         request.setValue("Client-ID \(accessKey)", forHTTPHeaderField: "Authorization")
         let (data, _) = try await URLSession.shared.data(for: request)
         let response = try JSONDecoder().decode(type, from: data)

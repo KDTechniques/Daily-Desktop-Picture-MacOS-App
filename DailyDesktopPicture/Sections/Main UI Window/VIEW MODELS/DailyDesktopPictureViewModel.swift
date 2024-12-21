@@ -106,7 +106,7 @@ final class DailyDesktopPictureViewModel {
     /// this sets values to releveny variables after first app launch
     private func getNSetFromUserDefaults() {
         launchAtLogin = defaults.bool(forKey: defaultKeys.launchAtLoginKey.rawValue)
-        endpointSelection = utilities.retrieveDataFromUserDefaults(key: defaultKeys.endpointSelection.rawValue, type: EndpointTypes.self) ?? .random
+        endpointSelection = utilities.retrieveDataFromUserDefaults(key: .endpointSelection, type: EndpointTypes.self) ?? .random
         tagSelection = defaults.string(forKey: defaultKeys.tagSelection.rawValue) ?? ""
         customTagsSet = Set(defaults.stringArray(forKey: defaultKeys.customTagsSet.rawValue) ?? [])
     }
@@ -166,13 +166,12 @@ final class DailyDesktopPictureViewModel {
     func forceChangeDesktopPicture() async throws {
         switch endpointSelection {
         case .random:
-            guard let imageURLString: String = try await imageAPIService.fetchRandomImageURLString(),
-                  let imageURL: URL = .init(string: imageURLString) else {
+            guard let randomImageURL: URL = try await imageAPIService.fetchRandomImageURLString() else {
                 print("Error occured while fetching a random image url!")
                 return
             }
             
-            let imageFileURL: URL = try await downloadManager.downloadImage(imageURL)
+            let imageFileURL: URL = try await downloadManager.downloadImage(randomImageURL)
             await wallpaperManager.setDesktopPicture(imageFileURL)
             
         case .customTags:
