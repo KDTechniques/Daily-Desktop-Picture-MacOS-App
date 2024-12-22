@@ -24,7 +24,7 @@ struct DailyDesktopPicture: App {
                 .onAppear {
                     // Access the AppDelegate and pass the value
                     appDelegate.dailyDesktopPictureVM = dailyDesktopPictureVM
-                }
+                } 
                 .alertViewModifier()
         }
         .defaultPosition(.center)

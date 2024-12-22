@@ -30,16 +30,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Create the Menu
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "Show Main UI", action: #selector(showMainUI), keyEquivalent: ""))
+
+        // Create "Show Main UI" menu item
+        let showMainUIMenuItem = NSMenuItem(title: "Show Main UI", action: #selector(showMainUI), keyEquivalent: "")
+        showMainUIMenuItem.target = self // Set the target
+        menu.addItem(showMainUIMenuItem)
+
+        // Add a separator
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Force Change the Desktop Picture", action: #selector(changeDesktopPicture), keyEquivalent: ""))
+
+        // Create "Force Change the Desktop Picture" menu item
+        let changeDesktopPictureMenuItem = NSMenuItem(title: "Force Change the Desktop Picture", action: #selector(changeDesktopPicture), keyEquivalent: "")
+        changeDesktopPictureMenuItem.target = self // Set the target
+        menu.addItem(changeDesktopPictureMenuItem)
+
+        // Add another separator
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Quit", action: #selector(quitApp), keyEquivalent: ""))
+
+        // Create "Quit" menu item
+        let quitMenuItem = NSMenuItem(title: "Quit", action: #selector(quitApp), keyEquivalent: "q")
+        quitMenuItem.target = self // Set the target
+        menu.addItem(quitMenuItem)
+        
         statusItem?.menu = menu
     }
     
     // MARK: - forceChangeDesktopPicture
-    @objc func changeDesktopPicture() {
+    @objc func changeDesktopPicture(sender: NSMenuItem) {
         Task {
             do {
                 try await dailyDesktopPictureVM?.forceChangeDesktopPicture()
@@ -50,7 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     // MARK: - showMainUI
-    @objc func showMainUI() {
+    @objc func showMainUI(sender: NSMenuItem) {
         Utilities.openWindow(.main)
     }
     
@@ -60,7 +77,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     // MARK: - quitApp
-    @objc func quitApp() {
-        NSApplication.shared.terminate(nil)
+    @objc func quitApp(sender: NSMenuItem) {
+        NSApp.terminate(self)
     }
 }
